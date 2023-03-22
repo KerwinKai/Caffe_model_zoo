@@ -1,0 +1,696 @@
+name: "SqueezeNet_1_1"
+input: "x"
+input_dim: 1
+input_dim: 3
+input_dim: 224
+input_dim: 224
+layer {
+  name: "features_0"
+  type: "Convolution"
+  bottom: "x"
+  top: "features_0"
+  convolution_param {
+    num_output: 64
+    bias_term: true
+    pad: 0
+    kernel_size: 3
+    group: 1
+    stride: 2
+    dilation: 1
+  }
+}
+layer {
+  name: "features_1"
+  type: "ReLU"
+  bottom: "features_0"
+  top: "features_1"
+}
+layer {
+  name: "features_2"
+  type: "Pooling"
+  bottom: "features_1"
+  top: "features_2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+    pad: 0
+    ceil_mode: true
+  }
+}
+layer {
+  name: "features_3_squeeze"
+  type: "Convolution"
+  bottom: "features_2"
+  top: "features_3_squeeze"
+  convolution_param {
+    num_output: 16
+    bias_term: true
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    dilation: 1
+  }
+}
+layer {
+  name: "features_3_squeeze_activation"
+  type: "ReLU"
+  bottom: "features_3_squeeze"
+  top: "features_3_squeeze_activation"
+}
+layer {
+  name: "features_3_expand1x1"
+  type: "Convolution"
+  bottom: "features_3_squeeze_activation"
+  top: "features_3_expand1x1"
+  convolution_param {
+    num_output: 64
+    bias_term: true
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    dilation: 1
+  }
+}
+layer {
+  name: "features_3_expand1x1_activation"
+  type: "ReLU"
+  bottom: "features_3_expand1x1"
+  top: "features_3_expand1x1_activation"
+}
+layer {
+  name: "features_3_expand3x3"
+  type: "Convolution"
+  bottom: "features_3_squeeze_activation"
+  top: "features_3_expand3x3"
+  convolution_param {
+    num_output: 64
+    bias_term: true
+    pad: 1
+    kernel_size: 3
+    group: 1
+    stride: 1
+    dilation: 1
+  }
+}
+layer {
+  name: "features_3_expand3x3_activation"
+  type: "ReLU"
+  bottom: "features_3_expand3x3"
+  top: "features_3_expand3x3_activation"
+}
+layer {
+  name: "cat"
+  type: "Concat"
+  bottom: "features_3_expand1x1_activation"
+  bottom: "features_3_expand3x3_activation"
+  top: "cat"
+  concat_param {
+    axis: 1
+  }
+}
+layer {
+  name: "features_4_squeeze"
+  type: "Convolution"
+  bottom: "cat"
+  top: "features_4_squeeze"
+  convolution_param {
+    num_output: 16
+    bias_term: true
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    dilation: 1
+  }
+}
+layer {
+  name: "features_4_squeeze_activation"
+  type: "ReLU"
+  bottom: "features_4_squeeze"
+  top: "features_4_squeeze_activation"
+}
+layer {
+  name: "features_4_expand1x1"
+  type: "Convolution"
+  bottom: "features_4_squeeze_activation"
+  top: "features_4_expand1x1"
+  convolution_param {
+    num_output: 64
+    bias_term: true
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    dilation: 1
+  }
+}
+layer {
+  name: "features_4_expand1x1_activation"
+  type: "ReLU"
+  bottom: "features_4_expand1x1"
+  top: "features_4_expand1x1_activation"
+}
+layer {
+  name: "features_4_expand3x3"
+  type: "Convolution"
+  bottom: "features_4_squeeze_activation"
+  top: "features_4_expand3x3"
+  convolution_param {
+    num_output: 64
+    bias_term: true
+    pad: 1
+    kernel_size: 3
+    group: 1
+    stride: 1
+    dilation: 1
+  }
+}
+layer {
+  name: "features_4_expand3x3_activation"
+  type: "ReLU"
+  bottom: "features_4_expand3x3"
+  top: "features_4_expand3x3_activation"
+}
+layer {
+  name: "cat_1"
+  type: "Concat"
+  bottom: "features_4_expand1x1_activation"
+  bottom: "features_4_expand3x3_activation"
+  top: "cat_1"
+  concat_param {
+    axis: 1
+  }
+}
+layer {
+  name: "features_5"
+  type: "Pooling"
+  bottom: "cat_1"
+  top: "features_5"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+    pad: 0
+    ceil_mode: true
+  }
+}
+layer {
+  name: "features_6_squeeze"
+  type: "Convolution"
+  bottom: "features_5"
+  top: "features_6_squeeze"
+  convolution_param {
+    num_output: 32
+    bias_term: true
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    dilation: 1
+  }
+}
+layer {
+  name: "features_6_squeeze_activation"
+  type: "ReLU"
+  bottom: "features_6_squeeze"
+  top: "features_6_squeeze_activation"
+}
+layer {
+  name: "features_6_expand1x1"
+  type: "Convolution"
+  bottom: "features_6_squeeze_activation"
+  top: "features_6_expand1x1"
+  convolution_param {
+    num_output: 128
+    bias_term: true
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    dilation: 1
+  }
+}
+layer {
+  name: "features_6_expand1x1_activation"
+  type: "ReLU"
+  bottom: "features_6_expand1x1"
+  top: "features_6_expand1x1_activation"
+}
+layer {
+  name: "features_6_expand3x3"
+  type: "Convolution"
+  bottom: "features_6_squeeze_activation"
+  top: "features_6_expand3x3"
+  convolution_param {
+    num_output: 128
+    bias_term: true
+    pad: 1
+    kernel_size: 3
+    group: 1
+    stride: 1
+    dilation: 1
+  }
+}
+layer {
+  name: "features_6_expand3x3_activation"
+  type: "ReLU"
+  bottom: "features_6_expand3x3"
+  top: "features_6_expand3x3_activation"
+}
+layer {
+  name: "cat_2"
+  type: "Concat"
+  bottom: "features_6_expand1x1_activation"
+  bottom: "features_6_expand3x3_activation"
+  top: "cat_2"
+  concat_param {
+    axis: 1
+  }
+}
+layer {
+  name: "features_7_squeeze"
+  type: "Convolution"
+  bottom: "cat_2"
+  top: "features_7_squeeze"
+  convolution_param {
+    num_output: 32
+    bias_term: true
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    dilation: 1
+  }
+}
+layer {
+  name: "features_7_squeeze_activation"
+  type: "ReLU"
+  bottom: "features_7_squeeze"
+  top: "features_7_squeeze_activation"
+}
+layer {
+  name: "features_7_expand1x1"
+  type: "Convolution"
+  bottom: "features_7_squeeze_activation"
+  top: "features_7_expand1x1"
+  convolution_param {
+    num_output: 128
+    bias_term: true
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    dilation: 1
+  }
+}
+layer {
+  name: "features_7_expand1x1_activation"
+  type: "ReLU"
+  bottom: "features_7_expand1x1"
+  top: "features_7_expand1x1_activation"
+}
+layer {
+  name: "features_7_expand3x3"
+  type: "Convolution"
+  bottom: "features_7_squeeze_activation"
+  top: "features_7_expand3x3"
+  convolution_param {
+    num_output: 128
+    bias_term: true
+    pad: 1
+    kernel_size: 3
+    group: 1
+    stride: 1
+    dilation: 1
+  }
+}
+layer {
+  name: "features_7_expand3x3_activation"
+  type: "ReLU"
+  bottom: "features_7_expand3x3"
+  top: "features_7_expand3x3_activation"
+}
+layer {
+  name: "cat_3"
+  type: "Concat"
+  bottom: "features_7_expand1x1_activation"
+  bottom: "features_7_expand3x3_activation"
+  top: "cat_3"
+  concat_param {
+    axis: 1
+  }
+}
+layer {
+  name: "features_8"
+  type: "Pooling"
+  bottom: "cat_3"
+  top: "features_8"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+    pad: 0
+    ceil_mode: true
+  }
+}
+layer {
+  name: "features_9_squeeze"
+  type: "Convolution"
+  bottom: "features_8"
+  top: "features_9_squeeze"
+  convolution_param {
+    num_output: 48
+    bias_term: true
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    dilation: 1
+  }
+}
+layer {
+  name: "features_9_squeeze_activation"
+  type: "ReLU"
+  bottom: "features_9_squeeze"
+  top: "features_9_squeeze_activation"
+}
+layer {
+  name: "features_9_expand1x1"
+  type: "Convolution"
+  bottom: "features_9_squeeze_activation"
+  top: "features_9_expand1x1"
+  convolution_param {
+    num_output: 192
+    bias_term: true
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    dilation: 1
+  }
+}
+layer {
+  name: "features_9_expand1x1_activation"
+  type: "ReLU"
+  bottom: "features_9_expand1x1"
+  top: "features_9_expand1x1_activation"
+}
+layer {
+  name: "features_9_expand3x3"
+  type: "Convolution"
+  bottom: "features_9_squeeze_activation"
+  top: "features_9_expand3x3"
+  convolution_param {
+    num_output: 192
+    bias_term: true
+    pad: 1
+    kernel_size: 3
+    group: 1
+    stride: 1
+    dilation: 1
+  }
+}
+layer {
+  name: "features_9_expand3x3_activation"
+  type: "ReLU"
+  bottom: "features_9_expand3x3"
+  top: "features_9_expand3x3_activation"
+}
+layer {
+  name: "cat_4"
+  type: "Concat"
+  bottom: "features_9_expand1x1_activation"
+  bottom: "features_9_expand3x3_activation"
+  top: "cat_4"
+  concat_param {
+    axis: 1
+  }
+}
+layer {
+  name: "features_10_squeeze"
+  type: "Convolution"
+  bottom: "cat_4"
+  top: "features_10_squeeze"
+  convolution_param {
+    num_output: 48
+    bias_term: true
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    dilation: 1
+  }
+}
+layer {
+  name: "features_10_squeeze_activation"
+  type: "ReLU"
+  bottom: "features_10_squeeze"
+  top: "features_10_squeeze_activation"
+}
+layer {
+  name: "features_10_expand1x1"
+  type: "Convolution"
+  bottom: "features_10_squeeze_activation"
+  top: "features_10_expand1x1"
+  convolution_param {
+    num_output: 192
+    bias_term: true
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    dilation: 1
+  }
+}
+layer {
+  name: "features_10_expand1x1_activation"
+  type: "ReLU"
+  bottom: "features_10_expand1x1"
+  top: "features_10_expand1x1_activation"
+}
+layer {
+  name: "features_10_expand3x3"
+  type: "Convolution"
+  bottom: "features_10_squeeze_activation"
+  top: "features_10_expand3x3"
+  convolution_param {
+    num_output: 192
+    bias_term: true
+    pad: 1
+    kernel_size: 3
+    group: 1
+    stride: 1
+    dilation: 1
+  }
+}
+layer {
+  name: "features_10_expand3x3_activation"
+  type: "ReLU"
+  bottom: "features_10_expand3x3"
+  top: "features_10_expand3x3_activation"
+}
+layer {
+  name: "cat_5"
+  type: "Concat"
+  bottom: "features_10_expand1x1_activation"
+  bottom: "features_10_expand3x3_activation"
+  top: "cat_5"
+  concat_param {
+    axis: 1
+  }
+}
+layer {
+  name: "features_11_squeeze"
+  type: "Convolution"
+  bottom: "cat_5"
+  top: "features_11_squeeze"
+  convolution_param {
+    num_output: 64
+    bias_term: true
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    dilation: 1
+  }
+}
+layer {
+  name: "features_11_squeeze_activation"
+  type: "ReLU"
+  bottom: "features_11_squeeze"
+  top: "features_11_squeeze_activation"
+}
+layer {
+  name: "features_11_expand1x1"
+  type: "Convolution"
+  bottom: "features_11_squeeze_activation"
+  top: "features_11_expand1x1"
+  convolution_param {
+    num_output: 256
+    bias_term: true
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    dilation: 1
+  }
+}
+layer {
+  name: "features_11_expand1x1_activation"
+  type: "ReLU"
+  bottom: "features_11_expand1x1"
+  top: "features_11_expand1x1_activation"
+}
+layer {
+  name: "features_11_expand3x3"
+  type: "Convolution"
+  bottom: "features_11_squeeze_activation"
+  top: "features_11_expand3x3"
+  convolution_param {
+    num_output: 256
+    bias_term: true
+    pad: 1
+    kernel_size: 3
+    group: 1
+    stride: 1
+    dilation: 1
+  }
+}
+layer {
+  name: "features_11_expand3x3_activation"
+  type: "ReLU"
+  bottom: "features_11_expand3x3"
+  top: "features_11_expand3x3_activation"
+}
+layer {
+  name: "cat_6"
+  type: "Concat"
+  bottom: "features_11_expand1x1_activation"
+  bottom: "features_11_expand3x3_activation"
+  top: "cat_6"
+  concat_param {
+    axis: 1
+  }
+}
+layer {
+  name: "features_12_squeeze"
+  type: "Convolution"
+  bottom: "cat_6"
+  top: "features_12_squeeze"
+  convolution_param {
+    num_output: 64
+    bias_term: true
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    dilation: 1
+  }
+}
+layer {
+  name: "features_12_squeeze_activation"
+  type: "ReLU"
+  bottom: "features_12_squeeze"
+  top: "features_12_squeeze_activation"
+}
+layer {
+  name: "features_12_expand1x1"
+  type: "Convolution"
+  bottom: "features_12_squeeze_activation"
+  top: "features_12_expand1x1"
+  convolution_param {
+    num_output: 256
+    bias_term: true
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    dilation: 1
+  }
+}
+layer {
+  name: "features_12_expand1x1_activation"
+  type: "ReLU"
+  bottom: "features_12_expand1x1"
+  top: "features_12_expand1x1_activation"
+}
+layer {
+  name: "features_12_expand3x3"
+  type: "Convolution"
+  bottom: "features_12_squeeze_activation"
+  top: "features_12_expand3x3"
+  convolution_param {
+    num_output: 256
+    bias_term: true
+    pad: 1
+    kernel_size: 3
+    group: 1
+    stride: 1
+    dilation: 1
+  }
+}
+layer {
+  name: "features_12_expand3x3_activation"
+  type: "ReLU"
+  bottom: "features_12_expand3x3"
+  top: "features_12_expand3x3_activation"
+}
+layer {
+  name: "cat_7"
+  type: "Concat"
+  bottom: "features_12_expand1x1_activation"
+  bottom: "features_12_expand3x3_activation"
+  top: "cat_7"
+  concat_param {
+    axis: 1
+  }
+}
+layer {
+  name: "classifier_0"
+  type: "Dropout"
+  bottom: "cat_7"
+  top: "classifier_0"
+  dropout_param {
+    dropout_ratio: 0.5
+  }
+}
+layer {
+  name: "classifier_1"
+  type: "Convolution"
+  bottom: "classifier_0"
+  top: "classifier_1"
+  convolution_param {
+    num_output: 1000
+    bias_term: true
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    dilation: 1
+  }
+}
+layer {
+  name: "classifier_2"
+  type: "ReLU"
+  bottom: "classifier_1"
+  top: "classifier_2"
+}
+layer {
+  name: "classifier_3"
+  type: "Pooling"
+  bottom: "classifier_2"
+  top: "classifier_3"
+  pooling_param {
+    pool: AVE
+    global_pooling: true
+  }
+}
+layer {
+  name: "flatten"
+  type: "Flatten"
+  bottom: "classifier_3"
+  top: "flatten"
+}
